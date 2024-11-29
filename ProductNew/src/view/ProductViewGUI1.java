@@ -27,8 +27,6 @@ public class ProductViewGUI1 extends JFrame {
 	private Product product;
 
     public static void main(String[] args) {
-    	
-    	System.out.println("repo");
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
