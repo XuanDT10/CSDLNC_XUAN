@@ -1,4 +1,3 @@
-ddddddddd
 package view;
 
 import java.awt.EventQueue;
