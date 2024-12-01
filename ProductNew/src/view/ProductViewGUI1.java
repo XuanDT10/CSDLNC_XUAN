@@ -1,137 +1,226 @@
 package view;
 
-import java.awt.EventQueue;
+import controller.Controller;
 import model.Product;
-import model.ProductService;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.SwingWorker;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.awt.event.ActionEvent;
 
-public class ProductViewGUI1 extends JFrame {
-
+public class ProductView extends JFrame {
     private static final long serialVersionUID = 1L;
-    private JPanel contentPane;
-    private JTextField txtProductId;
-    private JTextField txtPrice;
-    private JLabel lblMessage;
-    private JTextArea txtAreaProducts; // Declare a JTextArea for displaying products
-	private Product product;
+    private Controller controller;
+    
+    // Các trường nhập liệu
+    private JTextField txtMaSanPham;
+    private JTextField txtTenSanPham;
+    private JTextField txtLoaiSanPham;
+    private JTextField txtHangSanXuat;
+    private JTextField txtGiaNhap;
+    private JTextField txtGiaBan;
+    private JTextField txtTonKho;
+    private JTextField txtTrangThai;
+    private JTextField txtChuThich;
+    private JTextArea txtAreaDisplay;
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    ProductViewGUI1 frame = new ProductViewGUI1();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+    // Constructor
+    public ProductView() {
+        controller = new Controller();
 
-    public ProductViewGUI1() {
+        // Thiết lập giao diện
+        setTitle("Product Manager");
+        setSize(600, 600); // Tăng kích thước cửa sổ
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 300);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
-        contentPane.setLayout(null);
-        
-        // Save Button
+        setLocationRelativeTo(null);
+        setResizable(true); // Cho phép thay đổi kích thước cửa sổ
+
+        // Panel chính để chứa các thành phần
+        JPanel panel = new JPanel();
+        panel.setLayout(null); // Dùng Absolute Layout
+
+        // Mã sản phẩm
+        JLabel lblMaSanPham = new JLabel("Mã sản phẩm:");
+        lblMaSanPham.setBounds(50, 30, 120, 30);
+        panel.add(lblMaSanPham);
+
+        txtMaSanPham = new JTextField(20);
+        txtMaSanPham.setBounds(180, 30, 200, 30);
+        panel.add(txtMaSanPham);
+
+        // Tên sản phẩm
+        JLabel lblTenSanPham = new JLabel("Tên sản phẩm:");
+        lblTenSanPham.setBounds(50, 70, 120, 30);
+        panel.add(lblTenSanPham);
+
+        txtTenSanPham = new JTextField(20);
+        txtTenSanPham.setBounds(180, 70, 200, 30);
+        panel.add(txtTenSanPham);
+
+        // Loại sản phẩm
+        JLabel lblLoaiSanPham = new JLabel("Loại sản phẩm:");
+        lblLoaiSanPham.setBounds(50, 110, 120, 30);
+        panel.add(lblLoaiSanPham);
+
+        txtLoaiSanPham = new JTextField(20);
+        txtLoaiSanPham.setBounds(180, 110, 200, 30);
+        panel.add(txtLoaiSanPham);
+
+        // Hãng sản xuất
+        JLabel lblHangSanXuat = new JLabel("Hãng sản xuất:");
+        lblHangSanXuat.setBounds(50, 150, 120, 30);
+        panel.add(lblHangSanXuat);
+
+        txtHangSanXuat = new JTextField(20);
+        txtHangSanXuat.setBounds(180, 150, 200, 30);
+        panel.add(txtHangSanXuat);
+
+        // Giá nhập
+        JLabel lblGiaNhap = new JLabel("Giá nhập:");
+        lblGiaNhap.setBounds(50, 190, 120, 30);
+        panel.add(lblGiaNhap);
+
+        txtGiaNhap = new JTextField(20);
+        txtGiaNhap.setBounds(180, 190, 200, 30);
+        panel.add(txtGiaNhap);
+
+        // Giá bán
+        JLabel lblGiaBan = new JLabel("Giá bán:");
+        lblGiaBan.setBounds(50, 230, 120, 30);
+        panel.add(lblGiaBan);
+
+        txtGiaBan = new JTextField(20);
+        txtGiaBan.setBounds(180, 230, 200, 30);
+        panel.add(txtGiaBan);
+
+        // Tồn kho
+        JLabel lblTonKho = new JLabel("Tồn kho:");
+        lblTonKho.setBounds(50, 270, 120, 30);
+        panel.add(lblTonKho);
+
+        txtTonKho = new JTextField(20);
+        txtTonKho.setBounds(180, 270, 200, 30);
+        panel.add(txtTonKho);
+
+        // Trạng thái
+        JLabel lblTrangThai = new JLabel("Trạng thái:");
+        lblTrangThai.setBounds(50, 310, 120, 30);
+        panel.add(lblTrangThai);
+
+        txtTrangThai = new JTextField(20);
+        txtTrangThai.setBounds(180, 310, 200, 30);
+        panel.add(txtTrangThai);
+
+        // Chú thích
+        JLabel lblChuThich = new JLabel("Chú thích:");
+        lblChuThich.setBounds(50, 350, 120, 30);
+        panel.add(lblChuThich);
+
+        txtChuThich = new JTextField(20);
+        txtChuThich.setBounds(180, 350, 200, 30);
+        panel.add(txtChuThich);
+
+        // Nút lưu sản phẩm
         JButton btnSave = new JButton("Save");
-        btnSave.setBounds(196, 93, 89, 23);
+        btnSave.setBounds(135, 390, 120, 30);
+        btnSave.setBackground(new Color(0, 123, 255)); // Màu xanh
+        btnSave.setForeground(Color.WHITE); // Màu chữ trắng
+        btnSave.setFocusPainted(false);
         btnSave.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 saveProduct();
             }
         });
-        contentPane.add(btnSave);
-        
-        // Product ID Label and TextField
-        JLabel lblProductId = new JLabel("Mã Sản Phẩm");
-        lblProductId.setBounds(84, 14, 67, 14);
-        contentPane.add(lblProductId);
-        
-        txtProductId = new JTextField();
-        txtProductId.setBounds(186, 11, 96, 20);
-        contentPane.add(txtProductId);
-        txtProductId.setColumns(10);
-        
-        // Price Label and TextField
-        JLabel lblPrice = new JLabel("Giá bán");
-        lblPrice.setBounds(84, 55, 49, 14);
-        contentPane.add(lblPrice);
-        
-        txtPrice = new JTextField();
-        txtPrice.setBounds(186, 52, 96, 20);
-        contentPane.add(txtPrice);
-        txtPrice.setColumns(10);
+        panel.add(btnSave);
 
-        // Message Label
-        lblMessage = new JLabel("");
-        lblMessage.setBounds(84, 160, 300, 14);
-        contentPane.add(lblMessage);
-
-        // JTextArea for displaying all products
-        txtAreaProducts = new JTextArea();
-        txtAreaProducts.setBounds(84, 180, 300, 70);
-        txtAreaProducts.setEditable(false);  // Make it non-editable
-        contentPane.add(txtAreaProducts);
-        
-        // Display Button
+        // Nút hiển thị tất cả sản phẩm
         JButton btnDisplay = new JButton("Display");
-        btnDisplay.setBounds(186, 127, 89, 23);
+        btnDisplay.setBounds(260, 390, 120, 30);
+        btnDisplay.setBackground(new Color(40, 167, 69)); // Màu xanh lá
+        btnDisplay.setForeground(Color.WHITE); // Màu chữ trắng
+        btnDisplay.setFocusPainted(false);
         btnDisplay.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-            	
-                displayAllProducts();
+                displayProducts();
             }
         });
-        contentPane.add(btnDisplay);
+        panel.add(btnDisplay);
+
+        // Nút xóa tất cả dữ liệu
+        JButton btnDeleteData = new JButton("Delete Data");
+        btnDeleteData.setBounds(437, 83, 120, 30);
+        btnDeleteData.setBackground(new Color(220, 53, 69)); // Màu đỏ
+        btnDeleteData.setForeground(Color.WHITE); // Màu chữ trắng
+        btnDeleteData.setFocusPainted(false);
+        btnDeleteData.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteAllData();
+            }
+        });
+        panel.add(btnDeleteData);
+
+        // Nút đóng ứng dụng
+        JButton btnClose = new JButton("Close");
+        btnClose.setBounds(437, 30, 120, 30);
+        btnClose.setBackground(new Color(220, 53, 69)); // Màu đỏ
+        btnClose.setForeground(Color.WHITE); // Màu chữ trắng
+        btnClose.setFocusPainted(false);
+        btnClose.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                closeApplication();
+            }
+        });
+        panel.add(btnClose);
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(57, 431, 500, 100);
+        panel.add(scrollPane);
+
+        // Thêm panel vào JFrame
+        getContentPane().add(panel);
+        
+                // Hiển thị danh sách sản phẩm
+                txtAreaDisplay = new JTextArea(10, 30);
+                txtAreaDisplay.setBounds(60, 425, 481, 184);
+                panel.add(txtAreaDisplay);
+                txtAreaDisplay.setEditable(false);
     }
 
-    // Save the product to the database
+    // Phương thức lưu sản phẩm
     private void saveProduct() {
-        String productID = txtProductId.getText();
-        String priceStr = txtPrice.getText();
-        
-        if (!productID.isEmpty() && !priceStr.isEmpty()) {
-            try {
-                double price = Double.parseDouble(priceStr);
-                Product product = new Product(productID, price);
-                ProductService.saveProductToDB(product);  // Save to DB4o
-                lblMessage.setText("Sản phẩm đã được lưu!");
-            } catch (NumberFormatException ex) {
-                lblMessage.setText("Vui lòng nhập giá hợp lệ.");
-            }
+        // Code lưu sản phẩm ở đây
+    }
+
+    // Phương thức hiển thị tất cả sản phẩm
+    private void displayProducts() {
+        List<Product> products = controller.getAllProducts();
+        txtAreaDisplay.setText(""); // Clear trước khi hiển thị mới
+        if (products.isEmpty()) {
+            txtAreaDisplay.append("Không có sản phẩm nào trong cơ sở dữ liệu.\n");
         } else {
-            lblMessage.setText("Vui lòng nhập đầy đủ thông tin.");
+            for (Product product : products) {
+                txtAreaDisplay.append(product + "\n");
+            }
         }
     }
 
-    // Display all products in the JTextArea
-    private void displayAllProducts() {
-    
-    	 lblMessage.setText("du lieu hien thi nhu sau");
-
-    	 if (ProductService.hasDataInDB()) {
-    		    System.out.println("Cơ sở dữ liệu có dữ liệu.");
-    		} else {
-    		    System.out.println("Cơ sở dữ liệu không có dữ liệu.");
-    		}
+    // Phương thức xóa tất cả dữ liệu
+    private void deleteAllData() {
+        int confirmation = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa tất cả dữ liệu?", 
+                                                         "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+        if (confirmation == JOptionPane.YES_OPTION) {
+            controller.deleteAllProducts();
+            JOptionPane.showMessageDialog(this, "Tất cả sản phẩm đã được xóa!");
+            txtAreaDisplay.setText(""); // Clear vùng hiển thị
+        }
     }
-     
-  	}
-      
 
-   
+    // Phương thức đóng ứng dụng
+    private void closeApplication() {
+        System.exit(0); // Đóng ứng dụng
+    }
+}
